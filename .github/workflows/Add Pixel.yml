@@ -34,7 +34,7 @@ jobs:
         run: |
           # Get the list of issues with 'color' label using GitHub API
           response=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/issues?labels=color&state=open")
+            "https://api.github.com/repos/${{ github.repository }}/issues?labels=color")
           
           # Count the number of issues returned
           count=$(echo "$response" | jq '. | length')
