@@ -1,0 +1,37 @@
+name: Create Transparent 2x2 PNG
+
+on:
+  workflow_dispatch: # Trigger manually
+
+jobs:
+  generate-png:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install pillow
+
+      - name: Generate 2x2 Transparent PNG
+        run: |
+          python - <<EOF
+          from PIL import Image
+
+          # Create a 2x2 image with a transparent background
+          img = Image.new('RGBA', (2, 2), (0, 0, 0, 0))  # Transparent background
+
+          # Access pixels and set colors (R, G, B, A)
+
+          # Save the image as tapestry.png
+          img.save('tapestry.png')
+          EOF
+
+      - name: Upload the PNG as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: tapestry-image
+          path: tapestry.png
