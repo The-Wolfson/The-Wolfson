@@ -73,7 +73,7 @@ jobs:
           if color_issues_count >= area:
               new_size = (int((area + 1)**0.5) + 1)**2
               new_dim = int(new_size**0.5)
-              new_img = Image.new("RGB", (new_dim, new_dim), (255, 255, 255))
+              new_img = Image.new("RGBA", (new_dim, new_dim), (0, 0, 0, 0))
               new_img.paste(img, (0, 0))
               img = new_img
               img.save(img_path)
