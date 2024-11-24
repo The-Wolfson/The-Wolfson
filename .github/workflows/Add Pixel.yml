@@ -46,6 +46,7 @@ jobs:
       - name: Process tapestry image
         env:
           ISSUE_TITLE: ${{ github.event.issue.title }}
+          COLOR_ISSUES_COUNT: ${{ env.color_issues_count }}
         run: |
           python3 <<EOF
           import sys
@@ -68,7 +69,7 @@ jobs:
           # Expand image if necessary
           width, height = img.size
           area = width * height
-          color_issues_count = ${{ github.repository.issue_count }}
+          color_issues_count = int("${{ env.COLOR_ISSUES_COUNT }}")
           if color_issues_count >= area:
               new_size = (int((area + 1)**0.5) + 1)**2
               new_dim = int(new_size**0.5)
