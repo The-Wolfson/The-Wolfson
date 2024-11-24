@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  process_issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate issue title
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: |
+          if [[ ! "$ISSUE_TITLE" =~ ^Color:\ #[0-9a-fA-F]{6}$ ]]; then
+            echo "❌ The issue title does not start with 'Color: #' followed by a valid hex code."
+            exit 1
+          fi
+          echo "✅ The issue title is valid."
+
+      - name: Install Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip
+          pip3 install pillow
+
+      - name: Process tapestry image
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: |
+          python3 <<EOF
+          import sys
+          from PIL import Image
+          import random
+
+          # Parse hex color from issue title
+          issue_title = "${{ github.event.issue.title }}"
+          hex_color = issue_title.split("#")[-1]
+          color = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+
+          # Load tapestry.png
+          img_path = "tapestry.png"
+          try:
+              img = Image.open(img_path)
+          except FileNotFoundError:
+              print("❌ tapestry.png not found!")
+              sys.exit(1)
+
+          # Expand image if necessary
+          width, height = img.size
+          area = width * height
+          color_issues_count = ${{ github.repository.issue_count }}
+          if color_issues_count >= area:
+              new_size = (int((area + 1)**0.5) + 1)**2
+              new_dim = int(new_size**0.5)
+              new_img = Image.new("RGB", (new_dim, new_dim), (255, 255, 255))
+              new_img.paste(img, (0, 0))
+              img = new_img
+              img.save(img_path)
+              print(f"Expanded tapestry to {new_dim}x{new_dim}")
+
+          # Pick a random spot and paint the pixel
+          x = random.randint(0, img.width - 1)
+          y = random.randint(0, img.height - 1)
+          img.putpixel((x, y), color)
+          img.save(img_path)
+          print(f"Added color {hex_color} at position ({x}, {y})")
+
+          EOF
+
+      - name: Commit updated tapestry
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add tapestry.png
+          git commit -m "Update tapestry with new color from issue #${{ github.event.issue.number }}"
+          git push
+
+      - name: Add color tag to issue
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: color
+
+      # If title is valid, then
+        # 1. check that the number of issues with the color tag + 1 < area of tapestry.png (width^2), if so expand the area of tapestry.png to the next perfect square then proceed to the next step
+        # 2. generate a random number between 1 and the area of tapestry.png
+        # 3. take the hex colour in the title and create a pixel of that color at the corrseponding spot in the image
+        # 4. Assign the 'color' tag to the issue
