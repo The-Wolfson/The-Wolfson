@@ -17,4 +17,4 @@ Adding to the tapestry is easy:
 ### [Add your color to the tapestry!](https://github.com/The-Wolfson/The-Wolfson/issues/new?title=Color%3A+%23)
 
 
-Feel free to fork this project or suggest new features in the [Discussions](https://github.com/The-Wolfson/The-Wolfson/discussions).
+<!-- Feel free to fork this project or suggest new features in the [Discussions](https://github.com/The-Wolfson/The-Wolfson/discussions). --!>
