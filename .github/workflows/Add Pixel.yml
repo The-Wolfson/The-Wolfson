@@ -14,20 +14,20 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Validate issue title
-        env:
-          ISSUE_TITLE: ${{ github.event.issue.title }}
         run: |
-          if [[ ! "$ISSUE_TITLE" =~ ^Color:\ #[0-9a-fA-F]{6}$ ]]; then
+          if [[ ! ${{ github.event.issue.title }} =~ ^Color:\ #[0-9a-fA-F]{6}$ ]]; then
             echo "❌ The issue title does not start with 'Color: #' followed by a valid hex code."
             exit 1
           fi
-          echo "✅ The issue title is valid."
+          echo "The issue title is valid."
 
-      - name: Install Python dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3 python3-pip
-          pip3 install pillow
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install pillow
 
       - name: Count color issues
         id: color_issue_count
@@ -45,7 +45,6 @@ jobs:
 
       - name: Process tapestry image
         env:
-          ISSUE_TITLE: ${{ github.event.issue.title }}
           COLOR_ISSUES_COUNT: ${{ env.color_issues_count }}
         run: |
           python3 <<EOF
@@ -70,14 +69,15 @@ jobs:
           width, height = img.size
           area = width * height
           color_issues_count = int("${{ env.COLOR_ISSUES_COUNT }}")
-          if color_issues_count >= area:
-              new_size = (int((area + 1)**0.5) + 1)**2
-              new_dim = int(new_size**0.5)
-              new_img = Image.new("RGBA", (new_dim, new_dim), (0, 0, 0, 0))
-              new_img.paste(img, (0, 0))
-              img = new_img
-              img.save(img_path)
-              print(f"Expanded tapestry to {new_dim}x{new_dim}")
+          if color_issues_count > current_pixels:
+            # Expand image by adding one row or column
+            new_width = width + 1 if width <= height else width
+            new_height = height + 1 if height < width else height
+            new_img = Image.new("RGBA", (new_width, new_height), (0, 0, 0, 0))
+            new_img.paste(img, (0, 0))
+            img = new_img
+            img.save(img_path)
+            print(f"Expanded tapestry to {new_width}x{new_height}")
 
           # Pick a random spot and paint the pixel
           x = random.randint(0, img.width - 1)
@@ -107,3 +107,4 @@ jobs:
         # 2. generate a random number between 1 and the area of tapestry.png
         # 3. take the hex colour in the title and create a pixel of that color at the corrseponding spot in the image
         # 4. Assign the 'color' tag to the issue
+        # 5. Close issue
