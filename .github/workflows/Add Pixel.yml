@@ -69,6 +69,13 @@ jobs:
           width, height = img.size
           area = width * height
           color_issues_count = int("${{ env.COLOR_ISSUES_COUNT }}")
+
+          # Expand image by adding one row or column
+          new_img = Image.new("RGBA", (4, 4), (0, 0, 0, 0))
+          new_img.paste(img, (0, 0))
+          img = new_img
+          img.save(img_path)
+
           if color_issues_count >= area - 1:
             # Expand image by adding one row or column
             new_size = max(width, height) + 1
