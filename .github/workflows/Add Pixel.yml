@@ -71,13 +71,12 @@ jobs:
           color_issues_count = int("${{ env.COLOR_ISSUES_COUNT }}")
           if color_issues_count >= area - 1:
             # Expand image by adding one row or column
-            new_width = width + 1 if width <= height else width
-            new_height = height + 1 if height < width else height
-            new_img = Image.new("RGBA", (new_width, new_height), (0, 0, 0, 0))
+            new_size = max(width, height) + 1
+            new_img = Image.new("RGBA", (new_size, new_height), (0, 0, 0, 0))
             new_img.paste(img, (0, 0))
             img = new_img
             img.save(img_path)
-            print(f"Expanded tapestry to {new_width}x{new_height}")
+            print(f"Expanded tapestry to {new_size}x{new_size}")
 
           # Pick a random spot and paint the pixel
           x = random.randint(0, img.width - 1)
