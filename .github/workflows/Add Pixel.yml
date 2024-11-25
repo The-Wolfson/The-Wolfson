@@ -15,7 +15,7 @@ jobs:
 
       - name: Validate issue title
         run: |
-          if [[ ! ${{ github.event.issue.title }} =~ ^Color:\ #[0-9a-fA-F]{6}$ ]]; then
+          if [[ ! "${{ github.event.issue.title }}" =~ ^Color:\ #[0-9a-fA-F]{6}$ ]]; then
             echo "❌ The issue title does not start with 'Color: #' followed by a valid hex code."
             exit 1
           fi
