@@ -69,7 +69,7 @@ jobs:
           width, height = img.size
           area = width * height
           color_issues_count = int("${{ env.COLOR_ISSUES_COUNT }}")
-          if color_issues_count > current_pixels:
+          if color_issues_count >= area - 1:
             # Expand image by adding one row or column
             new_width = width + 1 if width <= height else width
             new_height = height + 1 if height < width else height
