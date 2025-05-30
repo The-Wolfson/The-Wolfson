@@ -1,10 +1,14 @@
-## Hi there, I'm Josh
+## AboutMe
+Hi, I’m Josh, a year 10 student in Newcastle, Australia.
+I’m highly motivated and self-directed, with a strong interest in live entertainment (audio
+engineering, lighting design, production management) as well as software engineering,
+with a focus on iOS app development (earlier this year, I launched my first app, onCue,
+and I’m currently working on a second).
+Outside of tech and theatre, I’m passionate about sailing and the performing arts.
 
 ### **The Tapestry**
 
-Every time someone submits a new color, the tapestry evolves. Each contribution adds a pixel of your chosen color to our shared masterpiece.
-
-<img src="tapestry.png" alt="Our tapestry" title="This is our tapestry, it may be small, but it will grow!" width="200">
+<img src="tapestry.png" alt="Our tapestry" title="This is the tapestry." width="200">
 
 ---
 
