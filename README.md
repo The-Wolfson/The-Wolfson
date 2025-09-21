@@ -5,7 +5,7 @@ I have a strong interest in live entertainment (audio
 engineering, lighting design, production management) as well as software engineering,
 with a focus on iOS app development (I have a couple apps on the [app store](https://apps.apple.com/developer/louise-kiernan/id1811714901), and you can be sure I'm working on more!).
 
-Outside of tech and theatre, I’m passionate about sailing and the performing arts.
+Outside of tech and theatre, I’m passionate about sailing.
 
 ### **The Tapestry**
 
