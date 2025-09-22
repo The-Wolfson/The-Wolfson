@@ -7,11 +7,11 @@ with a focus on iOS app development (I have a couple apps on the [app store](htt
 
 Outside of tech and theatre, I’m passionate about sailing.
 
+---
+
 ### **The Tapestry**
 
 <img src="tapestry.png" alt="Our tapestry" title="This is the tapestry." width="200">
-
----
 
 ### **How Can You Contribute?**
 Adding to the tapestry is easy:
@@ -20,6 +20,3 @@ Adding to the tapestry is easy:
 
 
 ### [Add your color to the tapestry!](https://github.com/The-Wolfson/The-Wolfson/issues/new?title=Color%3A+%23)
-
-
-<!-- Feel free to fork this project or suggest new features in the [Discussions](https://github.com/The-Wolfson/The-Wolfson/discussions). --!>
